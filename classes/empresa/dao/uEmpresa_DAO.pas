@@ -5,20 +5,22 @@ interface
 uses
   uEmpresa, System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB;
 
-type TEmpresaDAO = class
-  public
+type
+  TEmpresaDAO = class
     class procedure CarregarEmpresa (Empresa    : TEmpresa);
     class procedure SalvarEmpresa   (Empresa    : TEmpresa);
     class procedure ExcluirEmpresa  (Empresa    : TEmpresa);
 
     constructor Create;
     destructor Destroy; override;
-end;
+  end;
 
 implementation
 
 uses
   uEmpresa.dm, Forms;
+
+{ TEmpresaDAO }
 
 constructor TEmpresaDAO.Create();
 begin
@@ -43,7 +45,7 @@ begin
       Open;
       if RecordCount > 0 then
       begin
-        Empresa.ClienteID         := FieldByName('cliente_id').AsInteger;
+      //  Empresa.ClienteID         := FieldByName('cliente_id').AsInteger;
         Empresa.CodigoVersao      := FieldByName('codigo_versao').AsInteger;
         Empresa.NomeFantasia      := FieldByName('nome_versao').AsString;
         Empresa.CodigoFinanceiro  := FieldByName('codigo_financeiro').AsInteger;

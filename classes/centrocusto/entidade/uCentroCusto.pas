@@ -27,11 +27,23 @@ type
     property CodigoCentroCustos     : string    read GetCodigoCentroCustos    write SetCodigoCentroCustos;
     property NomeCentroCustos       : string    read GetNomeCentroCustos      write SetNomeCentroCustos;
     property DataAlteracao          : TDateTime read GetDataAlteracao         write SetDataAlteracao;
+
+    constructor Create(CentroCustoID: Integer);
+
+    procedure InicializarCentroCusto(const CentroCusto: TCentroCusto);
   end;
 
 implementation
 
+uses
+  uCentroCusto.DAO;
+
 { TCentroCusto }
+
+constructor TCentroCusto.Create(CentroCustoID: Integer);
+begin
+  FCentroCustoID := CentroCustoID;
+end;
 
 function TCentroCusto.GetCentroCustoID: Integer;
 begin
@@ -66,6 +78,18 @@ end;
 procedure TCentroCusto.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TCentroCusto.InicializarCentroCusto(const CentroCusto: TCentroCusto);
+var
+  CentroCustoDAO: TCentroCustoDAO;
+begin
+  try
+    CentroCustoDAO := TCentroCustoDAO.Create;
+    CentroCustoDAO.CarregarCentroCusto(CentroCusto);
+  finally
+    CentroCustoDAO.Free;
+  end;
 end;
 
 end.

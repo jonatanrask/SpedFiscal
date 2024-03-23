@@ -68,11 +68,23 @@ type
     property CodigoMunicipal  : string    read GetCodigoMunicipal write SetCodigoMunicipal;
     property DataAlteracao    : TDateTime read GetDataAlteracao   write SetDataAlteracao;
 
+    constructor Create(ContadorID: Integer);
+
+    procedure InicializarContador(const Contador: TContador);
+
   end;
 
 implementation
 
+uses
+  uContador.DAO;
+
 { TContador }
+
+constructor TContador.Create(ContadorID: Integer);
+begin
+  FContadorID := ContadorID;
+end;
 
 function TContador.GetBairro: string;
 begin
@@ -207,6 +219,18 @@ end;
 procedure TContador.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TContador.InicializarContador(const Contador: TContador);
+var
+  ContadorDAO: TContadorDAO;
+begin
+  try
+    ContadorDAO := TContadorDAO.Create;
+    ContadorDAO.CarregarContador(Contador);
+  finally
+    ContadorDAO.Free;
+  end;
 end;
 
 end.

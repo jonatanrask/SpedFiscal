@@ -43,8 +43,8 @@ begin
       Open;
       if RecordCount > 0 then
       begin
-        DocumentoFiscal.CodigoInformacao  := FieldByName('nome').AsInteger;
-        DocumentoFiscal.Texto             := FieldByName('cpf').AsString;
+        DocumentoFiscal.CodigoInformacao  := FieldByName('codigo_informacao').AsInteger;
+        DocumentoFiscal.Texto             := FieldByName('texto').AsString;
         DocumentoFiscal.DataAlteracao     := FieldByName('data_alteracao').AsDateTime;
       end
       else

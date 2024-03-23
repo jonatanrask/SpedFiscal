@@ -23,11 +23,23 @@ type
     property UnidadeMedidaID : Integer   read GetUnidadeMedidaID;
     property Descricao       : string    read GetDescricao       write SetDescricao;
     property DataAlteracao   : TDateTime read GetDataAlteracao   write SetDataAlteracao;
+
+    constructor Create(UnidadeMedidaID: Integer);
+
+    procedure InicializarUnidadeMedida(const UnidadeMedida: TUnidadeMedida);
   end;
 
 implementation
 
+uses
+  uUnidadeMedida.DAO;
+
 { TUnidadeMedida }
+
+constructor TUnidadeMedida.Create(UnidadeMedidaID: Integer);
+begin
+  FUnidadeMedidaID := UnidadeMedidaID;
+end;
 
 function TUnidadeMedida.GetUnidadeMedidaID: Integer;
 begin
@@ -52,6 +64,18 @@ end;
 procedure TUnidadeMedida.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TUnidadeMedida.InicializarUnidadeMedida(const UnidadeMedida: TUnidadeMedida);
+var
+  UnidadeMedidaDAO: TUnidadeMedidaDAO;
+begin
+  try
+    UnidadeMedidaDAO := TUnidadeMedidaDAO.Create;
+    UnidadeMedidaDAO.CarregarUnidadeMedida(UnidadeMedida);
+  finally
+    UnidadeMedidaDAO.Free;
+  end;
 end;
 
 end.

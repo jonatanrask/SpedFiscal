@@ -31,11 +31,23 @@ type
     property DataAlteracao    : TDateTime read GetDataAlteracao    write SetDataAlteracao;
     property NumeroCampo      : Integer   read GetNumeroCampo      write SetNumeroCampo;
     property ConteudoAnterior : string    read GetConteudoAnterior write SetConteudoAnterior;
+
+    constructor Create(ClienteID: Integer);
+
+    procedure InicializarClienteLog(const ClienteLog: TClienteLog);
   end;
 
 implementation
 
+uses
+  uClienteLog.DAO;
+
 { TClienteLog }
+
+constructor TClienteLog.Create(ClienteID: Integer);
+begin
+  FClienteLogID := ClienteLogID;
+end;
 
 function TClienteLog.GetClienteID: Integer;
 begin
@@ -85,6 +97,18 @@ end;
 procedure TClienteLog.SetNumeroCampo(const Value: Integer);
 begin
   FNumeroCampo := Value;
+end;
+
+procedure TClienteLog.InicializarClienteLog(const ClienteLog: TClienteLog);
+var
+  ClienteLogDAO: TClienteLogDAO;
+begin
+  try
+    ClienteLogDAO := TClienteLogDAO.Create;
+    ClienteLogDAO.CarregarLogsCliente(ClienteLog);
+  finally
+    ClienteLogDAO.Free;
+  end;
 end;
 
 end.

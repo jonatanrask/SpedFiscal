@@ -54,7 +54,9 @@ uses
   uItem.dm in 'classes\item\datamodule\uItem.dm.pas' {DataModuleItem: TDataModule},
   uLancamentoFiscal.dm in 'classes\lancamentofiscal\datamodule\uLancamentoFiscal.dm.pas' {DataModuleLancamentoFiscal: TDataModule},
   uNaturezaOperacao.dm in 'classes\naturezaoperacao\datamodule\uNaturezaOperacao.dm.pas' {DataModuleNaturezaOperacao: TDataModule},
-  uUnidadeMedida.dm in 'classes\unidademedida\datamodule\uUnidadeMedida.dm.pas' {DataModuleUnidadeMedida: TDataModule};
+  uUnidadeMedida.dm in 'classes\unidademedida\datamodule\uUnidadeMedida.dm.pas' {DataModuleUnidadeMedida: TDataModule},
+  uClienteLog.dm in 'classes\cliente\clientelog\datamodule\uClienteLog.dm.pas' {DataModuleClienteLog: TDataModule},
+  Sped in 'view\Sped.pas' {FormSped};
 
 {$R *.res}
 
@@ -75,5 +77,6 @@ begin
   Application.CreateForm(TDataModuleLancamentoFiscal, DataModuleLancamentoFiscal);
   Application.CreateForm(TDataModuleNaturezaOperacao, DataModuleNaturezaOperacao);
   Application.CreateForm(TDataModuleUnidadeMedida, DataModuleUnidadeMedida);
+  Application.CreateForm(TDataModuleClienteLog, DataModuleClienteLog);
   Application.Run;
 end.

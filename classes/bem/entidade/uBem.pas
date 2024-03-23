@@ -54,11 +54,23 @@ type
     property Funcao           : string    read GetFuncao           write SetFuncao;
     property VidaUtil         : Integer   read GetVidaUtil         write SetVidaUtil;
     property DataAlteracao    : TDateTime read GetDataAlteracao    write SetDataAlteracao;
+
+    constructor Create(BemID: Integer);
+
+    procedure InicializarBem(const Bem: TBem);
   end;
 
 implementation
 
+uses
+  uBem.DAO;
+
 { TBem }
+
+constructor TBem.Create(BemID: Integer);
+begin
+  FBemID := BemID;
+end;
 
 function TBem.GetBemID: Integer;
 begin
@@ -163,6 +175,18 @@ end;
 procedure TBem.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TBem.InicializarBem(const Bem: TBem);
+var
+  BemDAO: TBemDAO;
+begin
+  try
+    BemDAO := TBemDAO.Create;
+    BemDAO.CarregarBem(Bem);
+  finally
+    BemDAO.Free;
+  end;
 end;
 
 end.

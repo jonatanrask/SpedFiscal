@@ -39,11 +39,23 @@ type
     property Nivel                : Integer   read GetNivel                write SetNivel;
     property CodigoContaAnalitica : string    read GetCodigoContaAnalitica write SetCodigoContaAnalitica;
     property NomeContaAnalitica   : string    read GetNomeContaAnalitica   write SetNomeContaAnalitica;
+
+    constructor Create(ContaContabilID: Integer);
+
+    procedure InicializaContaContabil(const ContaContabil: TContaContabil);
   end;
 
 implementation
 
+uses
+  uContaContabil.DAO;
+
 { TContaContabil }
+
+constructor TContaContabil.Create(ContaContabilID: Integer);
+begin
+  FContaContabilID := ContaContabilID;
+end;
 
 function TContaContabil.GetContaContabilID: Integer;
 begin
@@ -108,6 +120,18 @@ end;
 procedure TContaContabil.SetNomeContaAnalitica(const Value: string);
 begin
   FNomeContaAnalitica := Value;
+end;
+
+procedure TContaContabil.InicializaContaContabil(const ContaContabil: TContaContabil);
+var
+  ContaContabilDAO: TContaContabilDAO;
+begin
+  try
+    ContaContabilDAO.Create;
+    ContaContabilDAO.CarregarContaContabil(ContaContabil);
+  finally
+    ContaContabilDAO.Free;
+  end;
 end;
 
 end.

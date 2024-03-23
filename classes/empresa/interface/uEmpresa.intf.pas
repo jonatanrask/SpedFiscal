@@ -8,6 +8,7 @@ type
 
     function GetEmpresaID         : Integer;
     function GetClienteID         : Integer;
+    function GetContadorID        : Integer;
     function GetCodigoVersao      : Integer;
     function GetNomeFantasia      : string;
     function GetCodigoFinanceiro  : Integer;
@@ -30,8 +31,8 @@ type
     function GetAtividade         : string;
     function GetDataAlteracao     : TDateTime;
 
-    procedure SetEmpresaID        (const Value: Integer);
     procedure SetClienteID        (const Value: Integer);
+    procedure SetContadorID       (const Value: Integer);
     procedure SetCodigoVersao     (const Value: Integer);
     procedure SetNomeFantasia     (const Value: string);
     procedure SetCodigoFinanceiro (const Value: Integer);
@@ -54,8 +55,9 @@ type
     procedure SetAtividade        (const Value: string);
     procedure SetDataAlteracao    (const Value: TDateTime);
 
-    property EmpresaID        : Integer   read GetEmpresaID         write SetEmpresaID;
+    property EmpresaID        : Integer   read GetEmpresaID;
     property ClienteID        : Integer   read GetClienteID         write SetClienteID;
+    property ContadorID       : Integer   read GetContadorID        write SetContadorID;
     property CodigoVersao     : Integer   read GetCodigoVersao      write SetCodigoVersao;
     property NomeFantasia     : string    read GetNomeFantasia      write SetNomeFantasia;
     property CodigoFinanceiro : Integer   read GetCodigoFinanceiro  write SetCodigoFinanceiro;

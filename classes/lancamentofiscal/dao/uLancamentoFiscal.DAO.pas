@@ -39,7 +39,7 @@ begin
   try
     with DataModuleLancamentoFiscal.FDLancamentoFiscalQuery do
     begin
-      ParamByName('lacamento_fiscal_id').AsInteger := LancamentoFiscal.LancamentoFiscalID;
+      ParamByName('lancamento_fiscal_id').AsInteger := LancamentoFiscal.LancamentoFiscalID;
       Open;
       if RecordCount > 0 then
       begin

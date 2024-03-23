@@ -63,11 +63,23 @@ type
     property CodigoCombustivel  : string    read GetCodigoCombustivel  write SetCodigoCombustivel;
     property NaturezaOperacaoID : Integer   read GetNaturezaOperacaoID write SetNaturezaOperacaoID;
     property DataAlteracao      : TDateTime read GetDataAlteracao      write SetDataAlteracao;
+
+    constructor Create(ItemID: Integer);
+
+    procedure InicializarItem(const Item: TItem);
   end;
 
 implementation
 
+uses
+  uItem.DAO;
+
 { TItem }
+
+constructor TItem.Create(ItemID: Integer);
+begin
+  FItemID := ItemID;
+end;
 
 function TItem.GetAliquota: Double;
 begin
@@ -192,6 +204,18 @@ end;
 procedure TItem.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TItem.InicializarItem(const Item: TItem);
+var
+  ItemDAO: TItemDAO;
+begin
+  try
+    ItemDAO := TItemDAO.Create;
+    ItemDAO.CarregarItem(Item);
+  finally
+    ItemDAO.Free;
+  end;
 end;
 
 end.

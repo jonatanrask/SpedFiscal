@@ -27,11 +27,23 @@ type
     property CodigoInformacao : Integer   read GetCodigoInformacao    write SetCodigoInformacao;
     property Texto            : string    read GetTexto               write SetTexto;
     property DataAlteracao    : TDateTime read GetDataAlteracao       write SetDataAlteracao;
+
+    constructor Create(DocumentoFiscalID: Integer);
+
+    procedure InicializarDocumentoFiscal(const DocumentoFiscal: TDocumentoFiscal);
   end;
 
 implementation
 
+uses
+  uDocumentoFiscal.DAO;
+
 { TDocumentoFiscal }
+
+constructor TDocumentoFiscal.Create(DocumentoFiscalID: Integer);
+begin
+  FDocumentoFiscalID := DocumentoFiscalID;
+end;
 
 function TDocumentoFiscal.GetDocumentoFiscalID: Integer;
 begin
@@ -66,6 +78,18 @@ end;
 procedure TDocumentoFiscal.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TDocumentoFiscal.InicializarDocumentoFiscal(const DocumentoFiscal: TDocumentoFiscal);
+var
+  DocumentoFiscalDAO: TDocumentoFiscalDAO;
+begin
+  try
+    DocumentoFiscalDAO := TDocumentoFiscalDAO.Create;
+    DocumentoFiscalDAO.CarregarDocumentoFiscal(DocumentoFiscal);
+  finally
+    DocumentoFiscalDAO.Free;
+  end;
 end;
 
 end.

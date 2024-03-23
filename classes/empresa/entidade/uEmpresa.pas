@@ -7,6 +7,7 @@ interface
     private
       FEmpresaID        : Integer;
       FClienteID        : Integer;
+      FContadorID       : Integer;
       FCodigoVersao     : Integer;
       FNomeFantasia     : string;
       FCodigoFinanceiro : Integer;
@@ -31,6 +32,7 @@ interface
 
       function GetEmpresaID         : Integer;
       function GetClienteID         : Integer;
+      function GetContadorID        : Integer;
       function GetCodigoVersao      : Integer;
       function GetNomeFantasia      : string;
       function GetCodigoFinanceiro  : Integer;
@@ -53,8 +55,8 @@ interface
       function GetAtividade         : string;
       function GetDataAlteracao     : TDateTime;
 
-      procedure SetEmpresaID        (const Value: Integer);
       procedure SetClienteID        (const Value: Integer);
+      procedure SetContadorID       (const Value: Integer);
       procedure SetCodigoVersao     (const Value: Integer);
       procedure SetNomeFantasia     (const Value: string);
       procedure SetCodigoFinanceiro (const Value: Integer);
@@ -78,8 +80,9 @@ interface
       procedure SetDataAlteracao    (const Value: TDateTime);
 
     public
-      property EmpresaID        : Integer   read GetEmpresaID         write SetEmpresaID;
+      property EmpresaID        : Integer   read GetEmpresaID;
       property ClienteID        : Integer   read GetClienteID         write SetClienteID;
+      property ContadorID       : Integer   read GetContadorID        write SetContadorID;
       property CodigoVersao     : Integer   read GetCodigoVersao      write SetCodigoVersao;
       property NomeFantasia     : string    read GetNomeFantasia      write SetNomeFantasia;
       property CodigoFinanceiro : Integer   read GetCodigoFinanceiro  write SetCodigoFinanceiro;
@@ -102,11 +105,23 @@ interface
       property Atividade        : string    read GetAtividade         write SetAtividade;
       property DataAlteracao    : TDateTime read GetDataAlteracao     write SetDataAlteracao;
 
+      constructor Create(Empresa: Integer);
+
+      procedure InicializarEmpresa(const Empresa: TEmpresa);
+
   end;
 
 implementation
 
+uses
+  uEmpresa_DAO;
+
 { TEmpresa }
+
+constructor TEmpresa.Create(Empresa: Integer);
+begin
+  FEmpresaID := Empresa;
+end;
 
 function TEmpresa.GetAtividade: string;
 begin
@@ -131,6 +146,11 @@ end;
 function TEmpresa.GetClienteID: Integer;
 begin
   Result := FClienteID;
+end;
+
+function TEmpresa.GetContadorID: Integer;
+begin
+  Result := FContadorID;
 end;
 
 function TEmpresa.GetCodigoFinanceiro: Integer;
@@ -223,10 +243,6 @@ begin
   Result := FUF;
 end;
 
-procedure TEmpresa.SetEmpresaID(const Value: Integer);
-begin
-  FEmpresaID := Value;
-end;
 
 procedure TEmpresa.SetAtividade(const Value: string);
 begin
@@ -251,6 +267,11 @@ end;
 procedure TEmpresa.SetClienteID(const Value: Integer);
 begin
   FClienteID := Value;
+end;
+
+procedure TEmpresa.SetContadorID(const Value: Integer);
+begin
+  FContadorID := Value;
 end;
 
 procedure TEmpresa.SetCodigoFinanceiro(const Value: Integer);
@@ -336,6 +357,18 @@ end;
 procedure TEmpresa.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TEmpresa.InicializarEmpresa(const Empresa: TEmpresa);
+var
+  EmpresaDAO: TEmpresaDAO;
+begin
+  try
+    EmpresaDAO := EmpresaDAO.Create;
+    EmpresaDAO.CarregarEmpresa(Empresa);
+  finally
+    EmpresaDAO.Free;
+  end;
 end;
 
 end.

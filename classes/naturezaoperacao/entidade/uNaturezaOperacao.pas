@@ -13,7 +13,7 @@ type
     FDescricao          : string;
     FDataAlteracao      : TDateTime;
 
-   function GetNaturezaOperacaoID  : Integer;
+    function GetNaturezaOperacaoID  : Integer;
     function GetCodigoNatureza      : Integer;
     function GetDescricao           : string;
     function GetDataAlteracao       : TDateTime;
@@ -27,11 +27,23 @@ type
     property CodigoNatureza    : Integer   read GetCodigoNatureza      write SetCodigoNatureza;
     property Descricao         : string    read GetDescricao           write SetDescricao;
     property DataAlteracao     : TDateTime read GetDataAlteracao       write SetDataAlteracao;
+
+    constructor Create(NaturezaOperacaoID: Integer);
+
+    procedure InicializarNaturezaOperacao(const NaturezaOperacao: TNaturezaOperacao);
   end;
 
 implementation
 
+uses
+  uNaturezaOperacao.DAO;
+
 { TNaturezaOperacao }
+
+constructor TNaturezaOperacao.Create(NaturezaOperacaoID: Integer);
+begin
+  FNaturezaOperacaoID := NaturezaOperacaoID;
+end;
 
 function TNaturezaOperacao.GetNaturezaOperacaoID: Integer;
 begin
@@ -66,6 +78,18 @@ end;
 procedure TNaturezaOperacao.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TNaturezaOperacao.InicializarNaturezaOperacao(const NaturezaOperacao: TNaturezaOperacao);
+var
+  NaturezaOperacaoDAO: TNaturezaOperacaoDAO;
+begin
+  try
+    NaturezaOperacaoDAO := TNaturezaOperacaoDAO.Create;
+    NaturezaOperacaoDAO.CarregarNaturezaOperacao(NaturezaOperacao);
+  finally
+    NaturezaOperacaoDAO.Free;
+  end;
 end;
 
 end.

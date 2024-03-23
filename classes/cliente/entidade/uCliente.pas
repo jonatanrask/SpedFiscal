@@ -66,12 +66,24 @@ type
     property Complemento      : string    read GetComplemento       write SetComplemento;
     property Bairro           : string    read GetBairro            write SetBairro;
     property ContaContabilID  : Integer   read GetContaContabilID   write SetContaContabilID;
-   property DataAlteracao     : TDateTime read GetDataAlteracao     write SetDataAlteracao;
+    property DataAlteracao    : TDateTime read GetDataAlteracao     write SetDataAlteracao;
+
+    constructor Create(ClienteID: Integer);
+
+    procedure InicializarCliente(const Cliente: TCliente);
   end;
 
 implementation
 
+uses
+  uCliente.DAO;
+
 { TCliente }
+
+constructor TCliente.Create(ClienteID: Integer);
+begin
+  FClienteID := ClienteID;
+end;
 
 function TCliente.GetBairro: string;
 begin
@@ -206,6 +218,18 @@ end;
 procedure TCliente.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TCliente.InicializarCliente(const Cliente: TCliente);
+var
+  ClienteDAO: TClienteDAO;
+begin
+  try
+    ClienteDAO := ClienteDAO.Create;
+    ClienteDAO.CarregarCliente(Cliente);
+  finally
+    ClienteDAO.Free;
+  end;
 end;
 
 end.

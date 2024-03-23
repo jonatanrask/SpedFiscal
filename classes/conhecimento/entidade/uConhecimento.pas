@@ -44,11 +44,23 @@ type
     property LancamentoFiscalID : Integer   read GetLancamentoFiscalID  write SetLancamentoFiscalID;
     property DataAlteracao      : TDateTime read GetDataAlteracao       write SetDataAlteracao;
 
+    constructor Create(ConhecimentoID: Integer);
+
+    procedure InicializarConhecimento(const Conhecimento: TConhecimento);
+
   end;
 
 implementation
 
+uses
+  uConhecimento.DAO;
+
 { TConhecimento }
+
+constructor TConhecimento.Create(ConhecimentoID: Integer);
+begin
+  FConhecimentoID := ConhecimentoID;
+end;
 
 function TConhecimento.GetConhecimentoID: Integer;
 begin
@@ -123,6 +135,19 @@ end;
 procedure TConhecimento.SetDataAlteracao(const Value: TDateTime);
 begin
   FDataAlteracao := Value;
+end;
+
+procedure TConhecimento.InicializarConhecimento(const Conhecimento: TConhecimento);
+var
+  ConhecimentoDAO: TConhecimentoDAO;
+begin
+  try
+    ConhecimentoDAO := TConhecimentoDAO.Create;
+    ConhecimentoDAO.CarregarConhecimento(Conhecimento);
+  finally
+    ConhecimentoDAO.Free;
+  end;
+
 end;
 
 end.
