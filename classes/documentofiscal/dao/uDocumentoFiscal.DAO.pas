@@ -7,35 +7,100 @@ uses
 
 type
   TDocumentoFiscalDAO = class
-    class function CarregarDocumentoFiscal(DocumentoFiscalID: Integer): TDocumentoFiscal;
-
+    class procedure CarregarDocumentoFiscal (DocumentoFiscal: TDocumentoFiscal);
     class procedure SalvarDocumentoFiscal   (DocumentoFiscal: TDocumentoFiscal);
     class procedure ExcluirDocumentoFiscal  (DocumentoFiscal: TDocumentoFiscal);
+
+    constructor Create;
+    destructor Destroy; override;
   end;
 
 implementation
 
-class function TDocumentoFiscalDAO.CarregarDocumentoFiscal(DocumentoFiscalID: Integer): TDocumentoFiscal;
-var
-  ADOQuery: TADOQuery;
+uses
+  uDocumentoFiscal.dm, Forms;
+
+constructor TDocumentoFiscalDAO.Create();
 begin
-  Result := TDocumentoFiscal.Create;
-  ADOQuery := TADOQuery.Create(nil);
+  if not Assigned(DataModuleDocumentoFiscal) then
+  begin
+    DataModuleDocumentoFiscal := TDataModuleDocumentoFiscal.Create(Application)
+  end;
+end;
+
+destructor TDocumentoFiscalDAO.Destroy;
+begin
+  FreeAndNil(DataModuleDocumentoFiscal);
+  inherited;
+end;
+
+class procedure TDocumentoFiscalDAO.CarregarDocumentoFiscal(DocumentoFiscal: TDocumentoFiscal);
+begin
   try
-    // Implemente a lógica para carregar os dados do documento fiscal do banco de dados
+    with DataModuleDocumentoFiscal.FDDocumentoFiscalQuery do
+    begin
+      ParamByName('documento_fiscal_id').AsInteger := DocumentoFiscal.DocumentoFiscalID;
+      Open;
+      if RecordCount > 0 then
+      begin
+        DocumentoFiscal.CodigoInformacao  := FieldByName('nome').AsInteger;
+        DocumentoFiscal.Texto             := FieldByName('cpf').AsString;
+        DocumentoFiscal.DataAlteracao     := FieldByName('data_alteracao').AsDateTime;
+      end
+      else
+      begin
+        raise Exception.Create('Nenhum documento fiscal encontrado com esse Id');
+      end;
+
+    end;
   finally
-    ADOQuery.Free;
+    DataModuleDocumentoFiscal.FDDocumentoFiscalQuery.Close;
   end;
 end;
 
 class procedure TDocumentoFiscalDAO.SalvarDocumentoFiscal(DocumentoFiscal: TDocumentoFiscal);
 begin
-  // Implemente a lógica para salvar os dados do documento fiscal no banco de dados
+ try
+    with DataModuleDocumentoFiscal.FDDocumentoFiscalQuery do
+    begin
+      ParamByName('documento_fiscal_id').AsInteger := DocumentoFiscal.DocumentoFiscalID;
+      Open;
+
+      if RecordCount > 0 then
+      begin
+        Edit;
+      end
+      else
+      begin
+        Insert;
+      end;
+
+      DocumentoFiscal.CodigoInformacao := FieldByName('codigo_informacao').AsInteger;
+      DocumentoFiscal.Texto            := FieldByName('texto').AsString;
+
+      Post;
+      ApplyUpdates;
+      CommitUpdates;
+
+    end;
+  finally
+    DataModuleDocumentoFiscal.FDDocumentoFiscalQuery.Close;
+  end;
 end;
 
 class procedure TDocumentoFiscalDAO.ExcluirDocumentoFiscal(DocumentoFiscal: TDocumentoFiscal);
 begin
-  // Implemente a lógica para excluir os dados do documento fiscal do banco de dados
+  try
+    with DataModuleDocumentoFiscal.FDDocumentoFiscalDeleteQuery do
+    begin
+      ParamByName('documento_fiscal_id').AsInteger := DocumentoFiscal.DocumentoFiscalID;
+      ExecSql;
+      ApplyUpdates;
+      CommitUpdates;
+    end;
+  finally
+    DataModuleDocumentoFiscal.FDDocumentoFiscalDeleteQuery.Close;
+  end;
 end;
 
 end.

@@ -34,6 +34,7 @@ type
     procedure SetFax              (const Value: string);
     procedure SetEmail            (const Value: string);
     procedure SetCodigoMunicipal  (const Value: string);
+    procedure SetDataAlteracao    (const Value: TDateTime);
 
     property ContadorID       : Integer   read GetContadorID;
     property Nome             : string    read GetNome            write SetNome;
@@ -48,7 +49,7 @@ type
     property Fax              : string    read GetFax             write SetFax;
     property Email            : string    read GetEmail           write SetEmail;
     property CodigoMunicipal  : string    read GetCodigoMunicipal write SetCodigoMunicipal;
-    property DataAlteracao    : TDateTime read GetDataAlteracao;
+    property DataAlteracao    : TDateTime read GetDataAlteracao   write SetDataAlteracao;
   end;
 
 implementation

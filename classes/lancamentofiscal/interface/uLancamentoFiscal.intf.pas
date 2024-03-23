@@ -10,13 +10,14 @@ type
     function GetTexto             : string;
     function GetDataAlteracao     : TDateTime;
 
-    procedure SetCodigoObs  (const Value: Integer);
-    procedure SetTexto      (const Value: string);
+   procedure SetCodigoObs      (const Value: Integer);
+    procedure SetTexto         (const Value: string);
+    procedure SetDataAlteracao (const Value: TDateTime);
 
     property LancamentoFiscalID: Integer   read GetLancamentoFiscalID;
     property CodigoObs         : Integer   read GetCodigoObs            write SetCodigoObs;
     property Texto             : string    read GetTexto                write SetTexto;
-    property DataAlteracao     : TDateTime read GetDataAlteracao;
+    property DataAlteracao     : TDateTime read GetDataAlteracao        write SetDataAlteracao;
   end;
 
 implementation

@@ -8,34 +8,95 @@ uses
 type
   TUnidadeMedidaDAO = class
   public
-    class function CarregarUnidadeMedida(unidadeID: Integer): TUnidadeMedida;
-    class procedure SalvarUnidadeMedida(unidade: TUnidadeMedida);
-    class procedure ExcluirUnidadeMedida(unidadeID: Integer);
+    class procedure CarregarUnidadeMedida (UnidadeMedida: TUnidadeMedida);
+    class procedure SalvarUnidadeMedida   (UnidadeMedida: TUnidadeMedida);
+    class procedure ExcluirUnidadeMedida  (UnidadeMedida: TUnidadeMedida);
+
+    constructor Create;
+    destructor Destroy; override;
   end;
 
 implementation
+uses
+  uUnidadeMedida.dm, Forms;
 
-class function TUnidadeMedidaDAO.CarregarUnidadeMedida(unidadeID: Integer): TUnidadeMedida;
-var
-  ADOQuery: TADOQuery;
+constructor TUnidadeMedidaDAO.Create();
 begin
-  Result := TUnidadeMedida.Create;
-  ADOQuery := TADOQuery.Create(nil);
-  try
-    // Implemente a lógica para carregar os dados da unidade de medida do banco de dados
-  finally
-    ADOQuery.Free;
+  if not Assigned(DataModuleUnidadeMedida) then
+  begin
+    DataModuleUnidadeMedida := TDataModuleUnidadeMedida.Create(Application)
   end;
 end;
 
-class procedure TUnidadeMedidaDAO.SalvarUnidadeMedida(unidade: TUnidadeMedida);
+destructor TUnidadeMedidaDAO.Destroy;
 begin
-  // Implemente a lógica para salvar os dados da unidade de medida no banco de dados
+  FreeAndNil(DataModuleUnidadeMedida);
+  inherited;
 end;
 
-class procedure TUnidadeMedidaDAO.ExcluirUnidadeMedida(unidadeID: Integer);
+class procedure TUnidadeMedidaDAO.CarregarUnidadeMedida(UnidadeMedida: TUnidadeMedida);
 begin
-  // Implemente a lógica para excluir os dados da unidade de medida do banco de dados
+  try
+    with DataModuleUnidadeMedida.FDUnidadeMedidaQuery do
+    begin
+      ParamByName('nature_operacao_id').AsInteger := UnidadeMedida.UnidadeMedidaID;
+      if RecordCount > 0 then
+      begin
+        UnidadeMedida.Descricao     := FieldByName('descricao').AsString;
+        UnidadeMedida.DataAlteracao := FieldByName('data_alteracao').AsDateTime;
+      end
+      else
+      begin
+        raise Exception.Create('Nenhuma Unidade de Medida encontrada com esse Id');
+      end;
+    end;
+  finally
+    DataModuleUnidadeMedida.FDUnidadeMedidaQuery.Close;
+  end;
+end;
+
+class procedure TUnidadeMedidaDAO.SalvarUnidadeMedida(UnidadeMedida: TUnidadeMedida);
+begin
+  try
+    with DataModuleUnidadeMedida.FDUnidadeMedidaQuery do
+    begin
+      ParamByName('nature_operacao_id').AsInteger := UnidadeMedida.UnidadeMedidaID;
+      Open;
+
+      if RecordCount > 0 then
+      begin
+        Edit;
+      end
+      else
+      begin
+        Insert;
+      end;
+
+      FieldByName('descricao').AsString := UnidadeMedida.Descricao;
+
+      Post;
+      ApplyUpdates;
+      CommitUpdates;
+
+    end;
+  finally
+    DataModuleUnidadeMedida.FDUnidadeMedidaQuery.Close;
+  end;
+end;
+
+class procedure TUnidadeMedidaDAO.ExcluirUnidadeMedida(UnidadeMedida: TUnidadeMedida);
+begin
+  try
+   with DataModuleUnidadeMedida.FDUnidadeMedidaDeleteQuery do
+    begin
+      ParamByName('nature_operacao_id').AsInteger := UnidadeMedida.UnidadeMedidaID;
+      ExecSql;
+      ApplyUpdates;
+      CommitUpdates;
+    end;
+  finally
+    DataModuleUnidadeMedida.FDUnidadeMedidaDeleteQuery.Close;
+  end;
 end;
 
 end.

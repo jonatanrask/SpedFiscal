@@ -30,6 +30,7 @@ type
     procedure SetFatorConversao     (const Value: Double);
     procedure SetCodigoCombustivel  (const Value: string);
     procedure SetNaturezaOperacaoID (const Value: Integer);
+    procedure SetDataAlteracao      (const Value: TDateTime);
 
     property ItemID             : Integer   read GetItemID;
     property Descricao          : string    read GetDescricao          write SetDescricao;
@@ -43,7 +44,7 @@ type
     property FatorConversao     : Double    read GetFatorConversao     write SetFatorConversao;
     property CodigoCombustivel  : string    read GetCodigoCombustivel  write SetCodigoCombustivel;
     property NaturezaOperacaoID : Integer   read GetNaturezaOperacaoID write SetNaturezaOperacaoID;
-    property DataAlteracao      : TDateTime read GetDataAlteracao;
+    property DataAlteracao      : TDateTime read GetDataAlteracao      write SetDataAlteracao;
   end;
 
 implementation

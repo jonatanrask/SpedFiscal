@@ -50,6 +50,7 @@ type
     procedure SetFax              (const Value: string);
     procedure SetEmail            (const Value: string);
     procedure SetCodigoMunicipal  (const Value: string);
+    procedure SetDataAlteracao    (const Value: TDateTime);
 
   public
     property ContadorID       : Integer   read GetContadorID;
@@ -65,7 +66,7 @@ type
     property Fax              : string    read GetFax             write SetFax;
     property Email            : string    read GetEmail           write SetEmail;
     property CodigoMunicipal  : string    read GetCodigoMunicipal write SetCodigoMunicipal;
-    property DataAlteracao    : TDateTime read GetDataAlteracao;
+    property DataAlteracao    : TDateTime read GetDataAlteracao   write SetDataAlteracao;
 
   end;
 
@@ -201,6 +202,11 @@ end;
 procedure TContador.SetNumero(const Value: string);
 begin
   FNumero := Value;
+end;
+
+procedure TContador.SetDataAlteracao(const Value: TDateTime);
+begin
+  FDataAlteracao := Value;
 end;
 
 end.

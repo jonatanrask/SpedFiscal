@@ -53,6 +53,7 @@ interface
       function GetAtividade         : string;
       function GetDataAlteracao     : TDateTime;
 
+      procedure SetEmpresaID        (const Value: Integer);
       procedure SetClienteID        (const Value: Integer);
       procedure SetCodigoVersao     (const Value: Integer);
       procedure SetNomeFantasia     (const Value: string);
@@ -74,9 +75,10 @@ interface
       procedure SetSuframa          (const Value: string);
       procedure SetPerfil           (const Value: string);
       procedure SetAtividade        (const Value: string);
+      procedure SetDataAlteracao    (const Value: TDateTime);
 
     public
-      property EmpresaID        : Integer   read GetEmpresaID;
+      property EmpresaID        : Integer   read GetEmpresaID         write SetEmpresaID;
       property ClienteID        : Integer   read GetClienteID         write SetClienteID;
       property CodigoVersao     : Integer   read GetCodigoVersao      write SetCodigoVersao;
       property NomeFantasia     : string    read GetNomeFantasia      write SetNomeFantasia;
@@ -98,7 +100,7 @@ interface
       property Suframa          : string    read GetSuframa           write SetSuframa;
       property Perfil           : string    read GetPerfil            write SetPerfil;
       property Atividade        : string    read GetAtividade         write SetAtividade;
-      property DataAlteracao    : TDateTime read GetDataAlteracao;
+      property DataAlteracao    : TDateTime read GetDataAlteracao     write SetDataAlteracao;
 
   end;
 
@@ -221,6 +223,11 @@ begin
   Result := FUF;
 end;
 
+procedure TEmpresa.SetEmpresaID(const Value: Integer);
+begin
+  FEmpresaID := Value;
+end;
+
 procedure TEmpresa.SetAtividade(const Value: string);
 begin
   FAtividade := Value;
@@ -324,6 +331,11 @@ end;
 procedure TEmpresa.SetUF(const Value: string);
 begin
   FUF := Value;
+end;
+
+procedure TEmpresa.SetDataAlteracao(const Value: TDateTime);
+begin
+  FDataAlteracao := Value;
 end;
 
 end.

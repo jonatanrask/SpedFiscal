@@ -7,35 +7,101 @@ uses
 
 type
   TLancamentoFiscalDAO = class
-    class function CarregarLancamentoFiscal(LancamentoFiscalID: Integer): TLancamentoFiscal;
+    class procedure CarregarLancamentoFiscal  (LancamentoFiscal: TLancamentoFiscal);
+    class procedure SalvarLancamentoFiscal    (LancamentoFiscal: TLancamentoFiscal);
+    class procedure ExcluirLancamentoFiscal   (LancamentoFiscal: TLancamentoFiscal);
 
-    class procedure SalvarLancamentoFiscal  (LancamentoFiscal: TLancamentoFiscal);
-    class procedure ExcluirLancamentoFiscal (LancamentoFiscal: TLancamentoFiscal);
+    constructor Create;
+    destructor Destroy; override;
   end;
 
 implementation
 
-class function TLancamentoFiscalDAO.CarregarLancamentoFiscal(LancamentoFiscalID: Integer): TLancamentoFiscal;
-var
-  ADOQuery: TADOQuery;
+uses
+  uLancamentoFiscal.dm, Forms;
+
+constructor TLancamentoFiscalDAO.Create();
 begin
-  Result := TLancamentoFiscal.Create;
-  ADOQuery := TADOQuery.Create(nil);
-  try
-    // Implemente a lógica para carregar os dados do lançamento fiscal do banco de dados
-  finally
-    ADOQuery.Free;
+  if not Assigned(DataModuleLancamentoFiscal) then
+  begin
+    DataModuleLancamentoFiscal := TDataModuleLancamentoFiscal.Create(Application)
   end;
+end;
+
+destructor TLancamentoFiscalDAO.Destroy;
+begin
+  FreeAndNil(DataModuleLancamentoFiscal);
+  inherited;
+end;
+
+class procedure TLancamentoFiscalDAO.CarregarLancamentoFiscal(LancamentoFiscal: TLancamentoFiscal);
+begin
+  try
+    with DataModuleLancamentoFiscal.FDLancamentoFiscalQuery do
+    begin
+      ParamByName('lacamento_fiscal_id').AsInteger := LancamentoFiscal.LancamentoFiscalID;
+      Open;
+      if RecordCount > 0 then
+      begin
+        LancamentoFiscal.CodigoObs     := FieldByName('codigo_obs').AsInteger;
+        LancamentoFiscal.Texto         := FieldByName('texto').AsString;
+        LancamentoFiscal.DataAlteracao := FieldByName('data_alteracao').AsDateTime;
+      end
+      else
+      begin
+        raise Exception.Create('Nenhum lançamento fiscal encontrado com esse Id');
+      end;
+    end;
+  finally
+    DataModuleLancamentoFiscal.FDLancamentoFiscalQuery.Close;
+  end;
+
 end;
 
 class procedure TLancamentoFiscalDAO.SalvarLancamentoFiscal(LancamentoFiscal: TLancamentoFiscal);
 begin
-  // Implemente a lógica para salvar os dados do lançamento fiscal no banco de dados
+  try
+    with DataModuleLancamentoFiscal.FDLancamentoFiscalQuery do
+    begin
+      ParamByName('lacamento_fiscal_id').AsInteger := LancamentoFiscal.LancamentoFiscalID;
+      Open;
+
+      if RecordCount > 0 then
+      begin
+        Edit;
+      end
+      else
+      begin
+        Insert;
+      end;
+
+      FieldByName('codigo_obs').AsInteger      := LancamentoFiscal.CodigoObs;
+      FieldByName('texto').AsString            := LancamentoFiscal.Texto;
+
+      Post;
+      ApplyUpdates;
+      CommitUpdates;
+      
+    end;
+  finally
+    DataModuleLancamentoFiscal.FDLancamentoFiscalQuery.Close;
+  end;
+
 end;
 
 class procedure TLancamentoFiscalDAO.ExcluirLancamentoFiscal(LancamentoFiscal   : TLancamentoFiscal);
 begin
-  // Implemente a lógica para excluir os dados do lançamento fiscal do banco de dados
+  try
+   with DataModuleLancamentoFiscal.FDLancamentoFiscalDeleteQuery do
+    begin
+      ParamByName('lacamento_fiscal_id').AsInteger := LancamentoFiscal.LancamentoFiscalID;
+      ExecSql;
+      ApplyUpdates;
+      CommitUpdates;
+    end;
+  finally
+    DataModuleLancamentoFiscal.FDLancamentoFiscalDeleteQuery.Close;
+  end;
 end;
 
 end.

@@ -8,22 +8,57 @@ uses
 type
   TClienteLogDAO = class
   public
-    class function CarregarLogsCliente(clienteID: Integer): TArray<TClienteLog>;
+
+    class procedure CarregarLogsCliente(ClienteLog: TClienteLog);
+
+    constructor Create;
+    destructor Destroy; override;
   end;
 
 implementation
 
-class function TClienteLogDAO.CarregarLogsCliente(clienteID: Integer): TArray<TClienteLog>;
-var
-  ADOQuery: TADOQuery;
+uses
+  uClienteLog.dm, Forms;
+
+constructor TClienteLogDAO.Create();
 begin
-  Result := [];
-  ADOQuery := TADOQuery.Create(nil);
-  try
-    // Implemente a lógica para carregar os logs do cliente do banco de dados
-  finally
-    ADOQuery.Free;
+  if not Assigned(DataModuleClienteLog) then
+  begin
+    DataModuleClienteLog := TDataModuleClienteLog.Create(Application)
   end;
+end;
+
+destructor TClienteLogDAO.Destroy;
+begin
+  FreeAndNil(DataModuleClienteLog);
+  inherited;
+end;
+
+class procedure TClienteLogDAO.CarregarLogsCliente(ClienteLog: TClienteLog);
+begin
+  try
+    with DataModuleClienteLog.FDClienteLogQuery do
+    begin
+      ParamByName('cliente_id').AsInteger := ClienteLog.ClienteID;
+      Open;
+      if RecordCount > 0 then
+      begin
+        ClienteLog.ClienteLogID     := FieldByName('cliente_log_id').AsInteger;
+        ClienteLog.ClienteID        := FieldByName('cliente_id').AsInteger;
+        ClienteLog.DataAlteracao    := FieldByName('data_alteracao').AsDateTime;
+        ClienteLog.NumeroCampo      := FieldByName('numero_campo').AsInteger;
+        ClienteLog.ConteudoAnterior := FieldByName('conteudo_anterior').AsString;
+      end
+      else
+      begin
+        raise Exception.Create('Nenhum log encontrado com esse Id');
+      end;
+
+    end;
+  finally
+    DataModuleClienteLog.FDClienteLogQuery.Close;
+  end;
+
 end;
 
 end.

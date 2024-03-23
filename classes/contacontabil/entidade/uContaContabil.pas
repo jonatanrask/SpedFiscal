@@ -24,6 +24,7 @@ type
     function GetCodigoContaAnalitica : string;
     function GetNomeContaAnalitica   : string;
 
+    procedure SetDataAlteracao        (const Value: TDateTime);
     procedure SetCodigoNaturezaCC     (const Value: Integer);
     procedure SetTipoConta            (const Value: Integer);
     procedure SetNivel                (const Value: Integer);
@@ -32,7 +33,7 @@ type
 
   public
     property ContaContabilID      : Integer   read GetContaContabilID;
-    property DataAlteracao        : TDateTime read GetDataAlteracao;
+    property DataAlteracao        : TDateTime read GetDataAlteracao        write SetDataAlteracao;
     property CodigoNaturezaCC     : Integer   read GetCodigoNaturezaCC     write SetCodigoNaturezaCC;
     property TipoConta            : Integer   read GetTipoConta            write SetTipoConta;
     property Nivel                : Integer   read GetNivel                write SetNivel;
@@ -82,6 +83,11 @@ end;
 procedure TContaContabil.SetCodigoNaturezaCC(const Value: Integer);
 begin
   FCodigoNaturezaCC := Value;
+end;
+
+procedure TContaContabil.SetDataAlteracao(const Value: TDateTime);
+begin
+  FDataAlteracao := Value;
 end;
 
 procedure TContaContabil.SetTipoConta(const Value: Integer);

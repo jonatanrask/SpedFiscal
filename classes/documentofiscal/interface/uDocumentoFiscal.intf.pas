@@ -13,11 +13,12 @@ type
 
     procedure SetCodigoInformacao (const Value: Integer);
     procedure SetTexto            (const Value: string);
+    procedure SetDataAlteracao    (const Value: TDateTime);
 
     property DocumentoFiscalID: Integer   read GetDocumentoFiscalID;
     property CodigoInformacao : Integer   read GetCodigoInformacao      write SetCodigoInformacao;
     property Texto            : string    read GetTexto                 write SetTexto;
-    property DataAlteracao    : TDateTime read GetDataAlteracao;
+    property DataAlteracao    : TDateTime read GetDataAlteracao         write SetDataAlteracao;
   end;
 
 implementation

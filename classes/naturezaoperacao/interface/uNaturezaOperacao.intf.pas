@@ -12,11 +12,12 @@ type
 
     procedure SetCodigoNatureza(const Value: Integer);
     procedure SetDescricao     (const Value: string);
+    procedure SetDataAlteracao (const Value: TDateTime);
 
     property NaturezaOperacaoID: Integer   read GetNaturezaOperacaoID;
     property CodigoNatureza    : Integer   read GetCodigoNatureza      write SetCodigoNatureza;
     property Descricao         : string    read GetDescricao           write SetDescricao;
-    property DataAlteracao     : TDateTime read GetDataAlteracao;
+    property DataAlteracao     : TDateTime read GetDataAlteracao       write SetDataAlteracao;
   end;
 
 implementation

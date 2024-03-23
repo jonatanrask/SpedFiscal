@@ -30,6 +30,7 @@ type
     function GetAtividade         : string;
     function GetDataAlteracao     : TDateTime;
 
+    procedure SetEmpresaID        (const Value: Integer);
     procedure SetClienteID        (const Value: Integer);
     procedure SetCodigoVersao     (const Value: Integer);
     procedure SetNomeFantasia     (const Value: string);
@@ -51,8 +52,9 @@ type
     procedure SetSuframa          (const Value: string);
     procedure SetPerfil           (const Value: string);
     procedure SetAtividade        (const Value: string);
+    procedure SetDataAlteracao    (const Value: TDateTime);
 
-    property EmpresaID        : Integer   read GetEmpresaID;
+    property EmpresaID        : Integer   read GetEmpresaID         write SetEmpresaID;
     property ClienteID        : Integer   read GetClienteID         write SetClienteID;
     property CodigoVersao     : Integer   read GetCodigoVersao      write SetCodigoVersao;
     property NomeFantasia     : string    read GetNomeFantasia      write SetNomeFantasia;
@@ -74,7 +76,7 @@ type
     property Suframa          : string    read GetSuframa           write SetSuframa;
     property Perfil           : string    read GetPerfil            write SetPerfil;
     property Atividade        : string    read GetAtividade         write SetAtividade;
-    property DataAlteracao    : TDateTime read GetDataAlteracao;
+    property DataAlteracao    : TDateTime read GetDataAlteracao     write SetDataAlteracao;
   end;
 
 implementation

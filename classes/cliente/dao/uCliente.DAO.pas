@@ -41,11 +41,11 @@ begin
   try
     with DataModuleCliente.FDClienteQuery do
     begin
-      ParamByName('centro_custo_id').AsInteger := Cliente.ClienteID;
+      ParamByName('codcliente_id').AsInteger := Cliente.ClienteID;
       Open;
       if RecordCount > 0 then
       begin
-        Cliente.Nome              := FieldByName('codigo_pais').AsString;
+        Cliente.Nome              := FieldByName('nome').AsString;
         Cliente.CodigoPais        := FieldByName('codigo_pais').AsInteger;
         Cliente.CNPJ              := FieldByName('cnpj').AsString;
         Cliente.CPF               := FieldByName('cpf').AsString;

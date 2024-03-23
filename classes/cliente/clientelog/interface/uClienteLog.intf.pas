@@ -12,12 +12,13 @@ type
     function GetNumeroCampo       : Integer;
     function GetConteudoAnterior  : string;
 
+    procedure SetClienteLogID     (const Value: Integer);
     procedure SetClienteID        (const Value: Integer);
     procedure SetDataAlteracao    (const Value: TDateTime);
     procedure SetNumeroCampo      (const Value: Integer);
     procedure SetConteudoAnterior (const Value: string);
 
-    property ClienteLogID     : Integer   read GetClienteLogID;
+    property ClienteLogID     : Integer   read GetClienteLogID     write SetClienteLogId;
     property ClienteID        : Integer   read GetClienteID        write SetClienteID;
     property DataAlteracao    : TDateTime read GetDataAlteracao    write SetDataAlteracao;
     property NumeroCampo      : Integer   read GetNumeroCampo      write SetNumeroCampo;
